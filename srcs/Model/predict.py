@@ -17,8 +17,13 @@ def load_image(path: Path, img_size: int) -> torch.Tensor:
     return t.unsqueeze(0)
 
 
-def show_prediction_window(pred_img_path: Path, orig_img_path: Path, pred_class: str, conf: float) -> None:
-    """Display the prediction alongside paths to the transformed and original images."""
+def show_prediction_window(
+    pred_img_path: Path,
+    orig_img_path: Path,
+    pred_class: str,
+    conf: float,
+) -> None:
+    """Display the prediction alongside transformed and original images."""
     with Image.open(orig_img_path).convert("RGB") as img_orig:
         np_orig = np.asarray(img_orig)
     with Image.open(pred_img_path).convert("RGB") as img_pred:
@@ -74,7 +79,9 @@ def show_prediction_window(pred_img_path: Path, orig_img_path: Path, pred_class:
 
 
 def get_args():
-    parser = argparse.ArgumentParser(description="Predict a class for a single image")
+    parser = argparse.ArgumentParser(
+        description="Predict a class for a single image"
+    )
     parser.add_argument(
         "img_stem",
         type=str,
@@ -84,13 +91,19 @@ def get_args():
         "--name_tail",
         type=str,
         default="_original",
-        help="Tail appended to the base path for the transformed image (e.g., _mask, _blur)",
+        help=(
+            "Tail appended to the base path for the transformed image "
+            "(e.g., _mask, _blur)"
+        ),
     )
     parser.add_argument(
         "--orig_tail",
         type=str,
         default="_original",
-        help="Tail appended to the base path for the original image (defaults to _original)",
+        help=(
+            "Tail appended to the base path for the original image "
+            "(defaults to _original)"
+        ),
     )
     parser.add_argument(
         "--ext",
@@ -98,7 +111,9 @@ def get_args():
         default=".JPG",
         help="Image extension (with or without leading dot). Defaults to .JPG",
     )
-    parser.add_argument("--checkpoint", type=str, default="Model/checkpoints/best.pt")
+    parser.add_argument(
+        "--checkpoint", type=str, default="Model/checkpoints/best.pt"
+    )
     parser.add_argument("--img_size", type=int, default=224)
     args = parser.parse_args()
     return args

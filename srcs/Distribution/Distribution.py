@@ -6,6 +6,7 @@ from .utils import print_distribution
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def get_data(pathname):
     data = {}
     if not pathname.is_dir():
@@ -13,10 +14,12 @@ def get_data(pathname):
         exit(1)
     for subdir in pathname.iterdir():
         if subdir.is_dir():
-            # compte tous les JPG dans le sous-dossier et ses sous-sous-dossiers
+            # compte tous les JPG dans le sous-dossier et ses
+            # sous-sous-dossiers
             jpg_files = list(subdir.rglob("*.JPG"))
             data[subdir.name] = len(jpg_files)
     return data
+
 
 def main():
     if len(sys.argv) != 2:
@@ -25,6 +28,7 @@ def main():
     pathname = Path(sys.argv[1])
     data = get_data(pathname)
     print_distribution(data)
+
 
 if __name__ == "__main__":
     main()

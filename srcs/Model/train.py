@@ -7,6 +7,7 @@ from .loader import build_loaders
 from .model import build_model
 from tqdm.auto import tqdm
 
+
 @torch.no_grad()
 def evaluate(model: nn.Module, loader, device: torch.device) -> float:
     model.eval()
@@ -15,9 +16,12 @@ def evaluate(model: nn.Module, loader, device: torch.device) -> float:
     for x, y in loader:
         x, y = x.to(device), y.to(device)
         logits = model(x)  # predict
-        preds = logits.argmax(1)  # picks the index of the largest value along dimension 1
-        correct += (preds == y).sum().item()  # Counts how many were correct in this batch and adds to correct
-        total += y.size(0)  # Adds the number of samples in this batch to total
+        # Picks the index of the largest value along dimension 1.
+        preds = logits.argmax(1)
+        # Counts how many were correct in this batch and adds to correct.
+        correct += (preds == y).sum().item()
+        # Adds the number of samples in this batch to total.
+        total += y.size(0)
     return correct / max(1, total)
 
 
@@ -38,7 +42,12 @@ def train(train_loader, val_loader, class_to_idx, lr, epochs, out):
         model.train()
         total = 0
         running_loss = 0.0
-        pbar = tqdm(train_loader, desc=f"Epoch {epoch}/{epochs}", unit="batch", leave=True)
+        pbar = tqdm(
+            train_loader,
+            desc=f"Epoch {epoch}/{epochs}",
+            unit="batch",
+            leave=True,
+        )
         for x, y in pbar:
             x, y = x.to(device), y.to(device)
             optimizer.zero_grad()
@@ -52,18 +61,30 @@ def train(train_loader, val_loader, class_to_idx, lr, epochs, out):
             pbar.set_postfix(loss=f"{loss.item():.4f}", avg=f"{avg_loss:.4f}")
         train_loss = running_loss / max(1, total)
         val_acc = evaluate(model, val_loader, device)
-        print(f"Epoch {epoch}/{epochs} - train_loss={train_loss:.4f} val_acc={val_acc:.4f}")
+        print(
+            f"Epoch {epoch}/{epochs} - "
+            f"train_loss={train_loss:.4f} val_acc={val_acc:.4f}"
+        )
         if val_acc > best_acc:
             best_acc = val_acc
-            torch.save({"model_state": model.state_dict(), "class_to_idx": class_to_idx}, out_path)
+            torch.save(
+                {
+                    "model_state": model.state_dict(),
+                    "class_to_idx": class_to_idx,
+                },
+                out_path,
+            )
             print(f"  Saved checkpoint to {out_path}")
     print(f"Best val_acc: {best_acc:.4f}")
 
 
-
 def get_args():
-    parser = argparse.ArgumentParser(description="Train a leaf classifier with an 80/20 split")
-    parser.add_argument("--data_dir", type=str, default="data/images_transformed")
+    parser = argparse.ArgumentParser(
+        description="Train a leaf classifier with an 80/20 split"
+    )
+    parser.add_argument(
+        "--data_dir", type=str, default="data/images_transformed"
+    )
     parser.add_argument("--img_size", type=int, default=224)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--epochs", type=int, default=5)
@@ -74,7 +95,10 @@ def get_args():
         "--name_tail",
         type=str,
         default="_original",
-        help="Only keep files whose basename ends with this tail; pass empty string to keep all",
+        help=(
+            "Only keep files whose basename ends with this tail; "
+            "pass empty string to keep all"
+        ),
     )
     args = parser.parse_args()
     return args
@@ -91,7 +115,14 @@ def main():
         args.seed,
         name_tail,
     )
-    train(train_loader, val_loader, class_to_idx, args.lr, args.epochs, args.out)
+    train(
+        train_loader,
+        val_loader,
+        class_to_idx,
+        args.lr,
+        args.epochs,
+        args.out,
+    )
 
 
 if __name__ == "__main__":
