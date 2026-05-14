@@ -1,12 +1,39 @@
-    make .venv
-    source .venv/bin/activate
-    make distribution
-    make augmentation
-    make transformation
-    
-    make train  
-    1 arg needed --name_tail _original, or any tail name you want _mask _blur etc...
-    make predict
-    2 args needed:
-    the path to the img to predict: "data/images_transformed/Apple_Black_rot/image (2)"
-    the tail used during training: --name_tail "_original"
+```bash
+make reset
+```
+
+```bash
+make
+```
+
+```bash
+make norm
+```
+
+```bash
+make distribution
+```
+
+```bash
+make augmentation
+```
+
+```bash
+make distribution
+```
+
+```bash
+make transformation
+```
+
+```bash
+make train NAME_TAIL="_original" EPOCHS=1 BATCH_SIZE=16
+```
+
+```bash
+make predict IMG_STEM="data/images_transformed/Apple_Black_rot/image (1)" NAME_TAIL="_original"
+```
+
+```bash
+make signature
+```
