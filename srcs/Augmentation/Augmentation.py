@@ -8,7 +8,6 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 
-
 def equilibrate_data(data, path):
     best_v = max(data.values())
     values = list(data.values())
