@@ -7,7 +7,7 @@ DATA_DIR = data/images
 TRANSFORMED_DIR = data/images_transformed
 IMG = data/images/Apple_Black_rot/image (1).JPG
 IMG_STEM = data/images_transformed/Apple_Black_rot/image (1)
-DST = data/images/Apple_Black_rot
+DST = data/images/Apple_Black_rot_test
 N = 6
 NAME_TAIL = _original
 ORIG_TAIL = _original
@@ -52,7 +52,7 @@ augmentation: .venv
 	$(PYTHON) -m srcs.Augmentation.Augmentation $(DATA_DIR)
 
 transformation-one: .venv
-	$(PYTHON) srcs/Transformation/Transformation.py -src "$(IMG)"
+	$(PYTHON) srcs/Transformation/Transformation.py -src "$(IMG)" -dst "$(DST)"
 
 transformation: .venv
 	$(PYTHON) srcs/Transformation/Transformation.py -src $(DATA_DIR) -dst $(TRANSFORMED_DIR)
@@ -63,9 +63,20 @@ train: .venv
 predict: .venv
 	$(PYTHON) -m srcs.Model.predict "$(IMG_STEM)" --name_tail "$(NAME_TAIL)" --orig_tail "$(ORIG_TAIL)" --checkpoint $(CHECKPOINT)
 
+test-imges: .venv
+	$(PYTHON) -m srcs.Model.predict "data/test_images/Unit_test1/Apple_scab" --name_tail "" --orig_tail "" --checkpoint $(CHECKPOINT)
+	$(PYTHON) -m srcs.Model.predict "data/test_images/Unit_test1/Apple_rust" --name_tail "" --orig_tail "" --checkpoint $(CHECKPOINT)
+	$(PYTHON) -m srcs.Model.predict "data/test_images/Unit_test1/Apple_healthy1" --name_tail "" --orig_tail "" --checkpoint $(CHECKPOINT)
+	$(PYTHON) -m srcs.Model.predict "data/test_images/Unit_test1/Apple_healthy2" --name_tail "" --orig_tail "" --checkpoint $(CHECKPOINT)
+	$(PYTHON) -m srcs.Model.predict "data/test_images/Unit_test2/Grape_Esca" --name_tail "" --orig_tail "" --checkpoint $(CHECKPOINT)
+	$(PYTHON) -m srcs.Model.predict "data/test_images/Unit_test2/Grape_healthy" --name_tail "" --orig_tail "" --checkpoint $(CHECKPOINT)
+	$(PYTHON) -m srcs.Model.predict "data/test_images/Unit_test2/Grape_Black_rot1" --name_tail "" --orig_tail "" --checkpoint $(CHECKPOINT)
+	$(PYTHON) -m srcs.Model.predict "data/test_images/Unit_test2/Grape_Black_rot2" --name_tail "" --orig_tail "" --checkpoint $(CHECKPOINT)
+	$(PYTHON) -m srcs.Model.predict "data/test_images/Unit_test2/Grape_spot" --name_tail "" --orig_tail "" --checkpoint $(CHECKPOINT)
+
 signature:
 	zip -r $(ZIP) $(TRANSFORMED_DIR) $(CHECKPOINT)
 	sha1sum $(ZIP) > signature.txt
 	cat signature.txt
 
-.PHONY: all fclean re reset norm distribution augmentation-one augmentation transformation-one transformation train predict signature
+.PHONY: all fclean re reset norm distribution augmentation-one augmentation transformation-one transformation train predict test-imges signature
