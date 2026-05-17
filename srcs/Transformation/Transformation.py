@@ -152,7 +152,7 @@ def process_image(path, dst_dir=None, mask_option=False):
                 plt.title("Color histogram")
                 plt.legend()
                 plt.grid(True)
-                save_path = os.path.join(dst_dir, f"{base_name}_{name}.png")
+                save_path = os.path.join(dst_dir, f"{base_name}_{name}.JPG")
                 plt.savefig(save_path)
                 plt.close()
                 continue
