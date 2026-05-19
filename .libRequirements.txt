@@ -8,3 +8,4 @@ plantcv==4.9
 flake8
 altair==5.0.1
 tqdm
+PyQt6
