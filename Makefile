@@ -46,7 +46,7 @@ distribution: .venv
 	$(PYTHON) -m srcs.Distribution.Distribution $(DATA_DIR)
 
 augmentation-one: .venv
-	$(PYTHON) -m srcs.Augmentation.Transformation "$(IMG)" -s "$(DST)" -n $(N)
+	$(PYTHON) -m srcs.Augmentation.Augmentation "$(IMG)"
 
 augmentation: .venv
 	$(PYTHON) -m srcs.Augmentation.Augmentation $(DATA_DIR)
