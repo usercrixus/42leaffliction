@@ -5,6 +5,7 @@ import os
 import argparse
 import matplotlib.pyplot as plt
 from pathlib import Path
+from skimage.morphology import remove_small_objects
 
 
 def transformations(img, mask_option=False):
@@ -21,7 +22,10 @@ def transformations(img, mask_option=False):
 
     a_gray = pcv.rgb2gray_lab(rgb_img=img, channel="a")
     bin_mask = pcv.threshold.otsu(gray_img=a_gray, object_type="dark")
-    cleaned_mask = pcv.fill(bin_img=bin_mask, size=50)
+    cleaned_mask = remove_small_objects(
+        bin_mask.astype(bool),
+        max_size=49,
+    ).astype(np.uint8) * 255
     filtered_mask = pcv.roi.filter(
         mask=cleaned_mask,
         roi=rect_roi,
