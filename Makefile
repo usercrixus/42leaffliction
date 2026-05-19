@@ -12,7 +12,7 @@ N = 6
 NAME_TAIL = _original
 ORIG_TAIL = _original
 CHECKPOINT = Model/checkpoints/best.pt
-EPOCHS = 5
+EPOCHS = 1
 BATCH_SIZE = 32
 ZIP = leaffliction_dataset.zip
 
