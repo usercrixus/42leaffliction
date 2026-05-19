@@ -52,7 +52,7 @@ augmentation: .venv
 	$(PYTHON) -m srcs.Augmentation.Augmentation $(DATA_DIR)
 
 transformation-one: .venv
-	$(PYTHON) srcs/Transformation/Transformation.py -src "$(IMG)" -dst "$(DST)"
+	$(PYTHON) srcs/Transformation/Transformation.py -src "$(IMG)"
 
 transformation: .venv
 	$(PYTHON) srcs/Transformation/Transformation.py -src $(DATA_DIR) -dst $(TRANSFORMED_DIR)
